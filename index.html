@@ -99,7 +99,9 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
 
 /* --- cost estimator --- */
 .est{background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);padding:30px 34px;margin-bottom:30px;animation:rise .3s ease}
-@media(max-width:768px){.est{padding:22px}}
+/* when rendered inside a result slip, present as a section rather than a floating card */
+.slip .est{background:transparent;box-shadow:none;border-radius:0;margin:0;padding:22px 34px 28px;border-top:1px solid var(--line-soft);animation:none}
+@media(max-width:768px){.est{padding:22px}.slip .est{padding:20px 22px 24px}}
 .est h2{color:var(--green);font-size:1.7rem;margin-bottom:4px}
 .est .desc{color:var(--muted);font-size:.92rem;margin-bottom:20px}
 .est .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
@@ -187,7 +189,6 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
   </div>
 
   <div id="result" aria-live="polite"></div>
-  <div id="estimator"></div>
 
   <p class="foot"><b>Prototype — not legal advice.</b> Reflects the CBAM definitive regime from 1 January 2026 under Regulation (EU) 2023/956 as amended by the Omnibus Regulation (EU) 2025/2083. Product scope and reporting fields derive from the Commission's self-assessment tool (v1.1); benchmarks and default values are loaded from the Commission's official definitive-period files (Regs (EU) 2025/2620 and 2025/2621, Feb 2026 editions). Only the Official Journal of the EU is authentic. Current as of July 2026; the rules continue to evolve.</p>
 </div>
@@ -322,8 +323,7 @@ document.getElementById('form').addEventListener('submit',e=>{
     body=obligations()+emissionsData(rec);
   }
 
-  document.getElementById('estimator').innerHTML='';
-  box.innerHTML=`<div class="slip">${head}<div class="matched"><span class="tag">${esc(val(rec,'Main Category'))}</span><div class="cn">${esc(val(rec,'CN Code'))}</div><div class="gd">${esc(val(rec,'Goods concerned'))}</div></div><div class="checks">${checksHtml}</div>${body}</div>`;
+  box.innerHTML=`<div class="slip">${head}<div class="matched"><span class="tag">${esc(val(rec,'Main Category'))}</span><div class="cn">${esc(val(rec,'CN Code'))}</div><div class="gd">${esc(val(rec,'Goods concerned'))}</div></div><div class="checks">${checksHtml}</div><div id="estimator"></div>${body}</div>`;
   if(!baseFail && massState!=='fail'){showEstimator(rec,country);}
   box.scrollIntoView({behavior:'smooth',block:'nearest'});
 });
