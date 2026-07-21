@@ -63,14 +63,14 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
 .slip{background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);overflow:hidden;animation:rise .3s ease}
 @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .verdict{padding:26px 34px;display:flex;gap:18px;align-items:flex-start}
-.verdict.yes{background:var(--orange-bg);border-bottom:1px solid var(--orange-line)}
+.verdict.yes{background:var(--green-bg);border-bottom:1px solid var(--green-bl)}
 .verdict.maybe{background:var(--amber-bg);border-bottom:1px solid var(--amber-line)}
-.verdict.no{background:var(--green-bg);border-bottom:1px solid var(--green-bl)}
+.verdict.no{background:#ECEEF1;border-bottom:1px solid #D6DBE1}
 .verdict.err{background:var(--red-bg);border-bottom:1px solid var(--red-line)}
 .mark{flex-shrink:0;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:1.4rem;font-weight:700}
-.yes .mark{background:var(--orange)} .maybe .mark{background:var(--amber)} .no .mark{background:var(--green)} .err .mark{background:var(--red)}
+.yes .mark{background:var(--green)} .maybe .mark{background:var(--amber)} .no .mark{background:#828C9C} .err .mark{background:var(--red)}
 .verdict h3{font-size:1.55rem;margin-bottom:3px}
-.yes h3{color:var(--orange-dark)} .maybe h3{color:var(--amber)} .no h3{color:var(--green)} .err h3{color:var(--red)}
+.yes h3{color:var(--green)} .maybe h3{color:var(--amber)} .no h3{color:#4B5563} .err h3{color:var(--red)}
 .verdict p{font-size:.95rem;color:var(--ink)}
 .matched{padding:18px 34px;border-bottom:1px solid var(--line-soft);background:var(--bg)}
 .matched .tag{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#fff;background:var(--green);border-radius:4px;padding:4px 9px;margin-bottom:9px}
@@ -298,9 +298,9 @@ document.getElementById('form').addEventListener('submit',e=>{
     let why = !ctYes ? `Goods originating in ${esc(country)} are outside CBAM — its carbon pricing is linked to the EU ETS.`
             : !pYes ? `CBAM bites on release for free circulation. This procedure isn't caught (though later release for free circulation could be).`
             : `This commodity code isn't in CBAM scope.`;
-    head=`<div class="verdict no"><div class="mark">✓</div><div><h3>CBAM does not apply</h3><p>${why}</p></div></div>`;
+    head=`<div class="verdict no"><div class="mark">∅</div><div><h3>CBAM does not apply</h3><p>${why}</p></div></div>`;
   } else if(massState==='fail'){
-    head=`<div class="verdict no"><div class="mark">✓</div><div><h3>Exempt under the 50-tonne rule</h3><p>Your total CBAM-good imports stay under the annual de minimis threshold, so no CBAM obligations apply.</p></div></div>`;
+    head=`<div class="verdict no"><div class="mark">∅</div><div><h3>Exempt under the 50-tonne rule</h3><p>Your total CBAM-good imports stay under the annual de minimis threshold, so no CBAM obligations apply.</p></div></div>`;
     body=`<div class="report"><div class="note"><b>Keep an eye on the running total.</b> The 50-tonne limit is cumulative across <em>all</em> your CBAM goods (cement, iron &amp; steel, aluminium, fertilisers) per importer, per calendar year. If you cross it mid-year you become liable — and must already hold authorised-declarant status <em>before</em> exceeding it. Claim the exemption at customs with TARIC code Y137.</div></div>`;
   } else if(massState==='unsure'){
     head=`<div class="verdict maybe"><div class="mark">!</div><div><h3>Depends on your annual volume</h3><p>This good is otherwise in scope. Whether CBAM applies turns on the one thing left: your total CBAM-good imports for the year.</p></div></div>`;
@@ -308,7 +308,7 @@ document.getElementById('form').addEventListener('submit',e=>{
   } else {
     // applies (mass pass or energy na)
     const lead = energy ? 'Electricity and hydrogen are always in scope — the de minimis threshold never applies to them.' : 'This consignment is subject to CBAM in the definitive regime.';
-    head=`<div class="verdict yes"><div class="mark">!</div><div><h3>CBAM applies</h3><p>${lead}</p></div></div>`;
+    head=`<div class="verdict yes"><div class="mark">✓</div><div><h3>CBAM applies</h3><p>${lead}</p></div></div>`;
     body=obligations()+emissionsData(rec);
   }
 
