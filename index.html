@@ -61,6 +61,8 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
 .btn:focus-visible{outline:3px solid rgba(0,67,0,.35);outline-offset:2px}
 #result{margin-bottom:30px}
 .slip{background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);overflow:hidden;animation:rise .3s ease}
+.slip-next{margin-top:30px}
+.slip-next .report:first-child{padding-top:20px}
 @keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .verdict{padding:26px 34px;display:flex;gap:18px;align-items:flex-start}
 .verdict.yes{background:var(--green-bg);border-bottom:1px solid var(--green-bl)}
@@ -312,8 +314,11 @@ document.getElementById('form').addEventListener('submit',e=>{
     body=obligations()+emissionsData(rec);
   }
 
-  box.innerHTML=`<div class="slip">${head}<div class="checks">${checksHtml}</div><div id="estimator"></div>${body}</div>`;
-  if(!baseFail && massState!=='fail'){showEstimator(rec,country);}
+  const showEst = !baseFail && massState!=='fail';
+  box.innerHTML =
+    `<div class="slip">${head}<div class="checks">${checksHtml}</div>${showEst?'<div id="estimator"></div>':body}</div>`
+    + (showEst ? `<div class="slip slip-next">${body}</div>` : '');
+  if(showEst){showEstimator(rec,country);}
   box.scrollIntoView({behavior:'smooth',block:'nearest'});
 });
 
