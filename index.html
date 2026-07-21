@@ -360,7 +360,7 @@ function showEstimator(rec,country){
   const incInd=indirectPriced(cat);
   const cands=dvCandidates(code,country);
   const bRows=benchRows(code);
-  estState={code,country,cat,incInd,cands,useDefault:false,variant:cands[0]??null};
+  estState={code,country,cat,incInd,cands,useDefault:cands.length>0,variant:cands[0]??null};
 
   const variantSel = cands.length>1 ? `
       <div class="form-group" id="variantWrap" style="display:none">
@@ -390,13 +390,13 @@ function showEstimator(rec,country){
     <div class="form-group">
       <label>Embedded emissions data</label>
       <div class="toggle">
-        <button type="button" id="tActual" class="on">Actual supplier data</button>
-        <button type="button" id="tDefault" ${cands.length?'':'disabled title="No default values published for this code"'}>No data — use default values</button>
+        <button type="button" id="tActual" class="${cands.length?'':'on'}">Actual supplier data</button>
+        <button type="button" id="tDefault" class="${cands.length?'on':''}" ${cands.length?'':'disabled title="No default values published for this code"'}>No data — use default values</button>
       </div>
       ${variantSel}
       <div class="grid3">
-        <div class="form-group"><label>Direct SEE (tCO₂e/t)</label><input type="number" id="estDir" min="0" step="any" value="4.0"></div>
-        ${incInd?`<div class="form-group"><label>Indirect SEE (tCO₂e/t)</label><input type="number" id="estInd" min="0" step="any" value="0"></div>`
+        <div class="form-group"><label>Direct SEE (tCO₂e/t)</label><input type="number" id="estDir" min="0" step="any" value="" placeholder="from your supplier"></div>
+        ${incInd?`<div class="form-group"><label>Indirect SEE (tCO₂e/t)</label><input type="number" id="estInd" min="0" step="any" value="" placeholder="from your supplier"></div>`
                 :`<div class="form-group"><label>Indirect emissions</label><input type="text" value="Not priced for ${esc(cat)}" disabled></div>`}
         <div class="form-group"><label>Benchmark (tCO₂e/t)</label><input type="number" id="estBench" min="0" step="any" value="${benchFor(code,bRows.length?bRows[0][0]:'')}"><span class="help-text">Reg (EU) 2025/2620, column B</span></div>
       </div>
@@ -428,16 +428,20 @@ function showEstimator(rec,country){
     $('tDefault').classList.toggle('on',useDefault);
     const d=$('estDir'), i=$('estInd'), w=$('variantWrap');
     if(useDefault){ if(w)w.style.display=''; applyDefaults(); d.disabled=true; if(i)i.disabled=true; }
-    else{ if(w)w.style.display='none'; $('dvNote').innerHTML=''; d.disabled=false; if(i)i.disabled=false; }
+    else{ if(w)w.style.display='none'; $('dvNote').innerHTML=''; d.disabled=false; d.value=''; if(i){i.disabled=false; i.value='';} }
     calcEst();
   }
-  calcEst();
+  setMode(estState.useDefault);
 }
 function calcEst(){
   const $=id=>document.getElementById(id);
   const vol=+($('estVol').value||0), price=+($('estPrice').value||0), foreign=+($('estForeign').value||0);
   const dir=+($('estDir').value||0), ind=$('estInd')?+($('estInd').value||0):0, bench=+($('estBench').value||0);
   const out=$('estOut'); if(!vol||!price){out.innerHTML='';return;}
+  if(!estState.useDefault && $('estDir').value.trim()===''){
+    out.innerHTML='<div class="note" style="margin-top:6px">Enter your supplier\'s embedded-emissions figures above to see the estimate — or switch to <b>default values</b>.</div>';
+    return;
+  }
   const baseSee=dir+ind;
   const years=Object.keys(CBAM_FACTOR).map(Number);
   const rows=years.map(y=>{
