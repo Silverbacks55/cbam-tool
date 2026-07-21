@@ -86,6 +86,16 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
 .chk .lbl b{font-weight:600} .chk .val{color:var(--muted)}
 .report{padding:8px 34px 28px}
 .report h4{font-size:1.35rem;color:var(--green);margin:22px 0 8px}
+.ereport{overflow:hidden}
+.ereport>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 34px}
+.ereport>summary::-webkit-details-marker{display:none}
+.ereport>summary:hover h4{color:var(--green-mid)}
+.ereport>summary h4{margin:0;font-size:1.35rem;color:var(--green)}
+.ereport .chev{color:var(--green);display:flex;transition:transform .2s}
+.ereport[open] .chev{transform:rotate(180deg)}
+.ereport-body{padding:0 34px 26px}
+.ereport-body .sub{color:var(--muted);font-size:.9rem;margin:0 0 12px}
+@media(max-width:768px){.ereport>summary{padding:20px 22px}.ereport-body{padding:0 22px 22px}}
 .report .sub{color:var(--muted);font-size:.9rem;margin:-4px 0 10px}
 .step{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--line-soft)}
 .step:last-child{border-bottom:0}
@@ -231,13 +241,16 @@ const nl=s=>esc(s).replace(/\r?\n/g,'\n');
 const isEnergy = rec => { const c=val(rec,'Main Category').toLowerCase(); return c.includes('electricity')||c.includes('hydrogen'); };
 
 function obligations(){
-  return `<div class="report"><h4>What CBAM requires of you</h4>
+  return `<details class="ereport">
+    <summary><h4>What CBAM requires of you</h4><span class="chev" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></summary>
+    <div class="ereport-body">
     <p class="sub">The definitive regime is a financial obligation, not just reporting.</p>
     <div class="step"><div class="n">1</div><div><div class="st">Become an authorised CBAM declarant</div><div class="sd">Only authorised declarants may import in-scope goods for free circulation. Apply in the CBAM registry; applications submitted by 31 March 2026 let you keep importing provisionally while the decision is pending.</div></div></div>
     <div class="step"><div class="n">2</div><div><div class="st">Report embedded emissions each year</div><div class="sd">Submit an annual CBAM declaration of verified embedded emissions. The first is due 30 September 2027, covering 2026 imports. Commission default values may be used where verified actual data isn't available.</div></div></div>
     <div class="step"><div class="n">3</div><div><div class="st">Buy and surrender CBAM certificates</div><div class="sd">Certificate sales begin February 2027; the price tracks the EU ETS. Roughly: (embedded emissions − free-allocation benchmark × phase-in factor − carbon price paid abroad) × quantity.</div></div></div>
     <div class="step"><div class="n">4</div><div><div class="st">Flag it at customs</div><div class="sd">Declare the relevant CBAM status code on the import declaration — e.g. Y128 (authorisation granted) or Y238 (applied for, pending).</div></div></div>
-  </div>`;
+    </div>
+  </details>`;
 }
 function emissionsData(rec){
   const ro=[
