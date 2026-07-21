@@ -269,8 +269,7 @@ function emissionsData(rec){
     ['Carbon price abroad','A carbon price paid in the country of origin may be deducted, where evidenced.'],
   ];
   const prec=val(rec,'Precursors'),spec=val(rec,'Special provisions');
-  return `<div class="report"><h4>Emissions data you'll need to gather</h4>
-    <p class="sub">From the producer, for this commodity, to calculate your certificate liability.</p>`+
+  return `<div class="report"><h4>Emissions data you'll need to gather</h4>`+
     ro.filter(([k,v])=>v&&v!=='—').map(([k,v])=>`<div class="rrow"><div class="rk">${k}</div><div class="rv">${nl(v)}</div></div>`).join('')+
     (prec?`<div class="rrow"><div class="rk">Relevant precursors</div><div class="rv">${nl(prec)}</div></div>`:'')+
     (spec?`<div class="rrow"><div class="rk">Special provisions</div><div class="rv">${nl(spec)}</div></div>`:'')+`</div>`;
