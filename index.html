@@ -140,6 +140,8 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
 
 .foot{font-size:.8rem;color:var(--muted);line-height:1.55;padding:18px 4px 0;border-top:1px solid var(--line);margin-top:4px}
 .foot b{color:var(--ink)}
+.sources{background:#fff;border:1px solid var(--line);border-radius:6px;padding:14px 18px;font-size:.8rem;color:var(--muted);line-height:1.55;margin-top:16px}
+.sources b{color:var(--ink)}
 @media(max-width:768px){.verdict,.matched,.checks,.report{padding-left:22px;padding-right:22px}}
 @media(prefers-reduced-motion:reduce){.slip{animation:none}}
 </style>
@@ -192,6 +194,8 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
   <div id="result" aria-live="polite"></div>
 
   <p class="foot"><b>Not legal advice.</b> Reflects the CBAM definitive regime from 1 January 2026 under Regulation (EU) 2023/956 as amended by the Omnibus Regulation (EU) 2025/2083. Product scope and reporting fields derive from the Commission's self-assessment tool (v1.1); benchmarks and default values are loaded from the Commission's official definitive-period files (Regs (EU) 2025/2620 and 2025/2621, Feb 2026 editions). Only the Official Journal of the EU is authentic. Current as of July 2026; the rules continue to evolve.</p>
+
+  <div class="sources"><b>Data sources.</b> Benchmarks: Commission benchmark file for the definitive period (Reg (EU) 2025/2620, Feb 2026 Excel). Default values: Commission file "DVs as adopted" (Reg (EU) 2025/2621, Feb 2026), country-specific where published, otherwise the "Other Countries" values, with the regulation's mark-up (+10% in 2026, +20% in 2027, +30% from 2028). Both files are informational; only the regulations are legally binding. The cost calculation is a simplified estimate of the certificate formula and does not implement every SEFA refinement.</div>
 </div>
 
 <script>
@@ -419,7 +423,6 @@ function showEstimator(rec,country){
       <div id="dvNote"></div>
     </div>
     <div id="estOut"></div>
-    <div class="note"><b>Data sources.</b> Benchmarks: Commission benchmark file for the definitive period (Reg (EU) 2025/2620, Feb 2026 Excel). Default values: Commission file "DVs as adopted" (Reg (EU) 2025/2621, Feb 2026), country-specific where published, otherwise the "Other Countries" values, with the regulation's mark-up (+10% in 2026, +20% in 2027, +30% from 2028). Both files are informational; only the regulations are legally binding. The calculation is a simplified estimate of the certificate formula and does not implement every SEFA refinement.</div>
   </div>`;
 
   const $=id=>document.getElementById(id);
