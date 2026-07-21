@@ -81,7 +81,7 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
 .chk:last-child{border-bottom:0}
 .chk .ic{flex-shrink:0;font-weight:700;width:20px;font-size:1.05rem}
 .chk.pass .ic{color:var(--green)} .chk.fail .ic{color:var(--orange)} .chk.na .ic{color:var(--muted)}
-.chk .lbl b{font-weight:600} .chk .val{color:var(--muted);font-size:.85rem}
+.chk .lbl b{font-weight:600} .chk .val{color:var(--muted)}
 .report{padding:8px 34px 28px}
 .report h4{font-size:1.35rem;color:var(--green);margin:22px 0 8px}
 .report .sub{color:var(--muted);font-size:.9rem;margin:-4px 0 10px}
@@ -289,7 +289,7 @@ document.getElementById('form').addEventListener('submit',e=>{
   }
   const icon=s=> s===true?'✓' : s===false?'✕' : s==='na'?'–' : '?';
   const cls =s=> s===true?'pass' : s===false?'fail' : 'na';
-  const checksHtml=checks.map(([k,s,l,v])=>`<div class="chk ${cls(s)}"><span class="ic">${icon(s)}</span><span class="lbl"><b>${l}</b><div class="val">${esc(v)}</div></span></div>`).join('');
+  const checksHtml=checks.map(([k,s,l,v])=>`<div class="chk ${cls(s)}"><span class="ic">${icon(s)}</span><span class="lbl"><b>${l}:</b> <span class="val">${esc(v)}</span></span></div>`).join('');
 
   // gating conditions other than mass
   const baseFail = !cnYes || !ctYes || !pYes;
@@ -307,12 +307,12 @@ document.getElementById('form').addEventListener('submit',e=>{
     body=`<div class="report"><div class="note"><b>The deciding factor:</b> if your cumulative CBAM-good imports (all CN codes combined) reach <b>more than 50&nbsp;tonnes</b> in the calendar year, the obligations below apply and you must be an authorised declarant before crossing that line. At or below 50&nbsp;t, you're exempt (claim it with TARIC code Y137).</div></div>`+obligations()+emissionsData(rec);
   } else {
     // applies (mass pass or energy na)
-    const lead = energy ? 'Electricity and hydrogen are always in scope — the de minimis threshold never applies to them.' : 'This consignment is subject to CBAM in the definitive regime.';
+    const lead = energy ? 'Electricity and hydrogen are always in scope — the de minimis threshold never applies to them.' : 'This consignment is subject to CBAM.';
     head=`<div class="verdict yes"><div class="mark">✓</div><div><h3>CBAM applies</h3><p>${lead}</p></div></div>`;
     body=obligations()+emissionsData(rec);
   }
 
-  box.innerHTML=`<div class="slip">${head}<div class="matched"><span class="tag">${esc(val(rec,'Main Category'))}</span><div class="cn">${esc(val(rec,'CN Code'))}</div><div class="gd">${esc(val(rec,'Goods concerned'))}</div></div><div class="checks">${checksHtml}</div><div id="estimator"></div>${body}</div>`;
+  box.innerHTML=`<div class="slip">${head}<div class="checks">${checksHtml}</div><div id="estimator"></div>${body}</div>`;
   if(!baseFail && massState!=='fail'){showEstimator(rec,country);}
   box.scrollIntoView({behavior:'smooth',block:'nearest'});
 });
