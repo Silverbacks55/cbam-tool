@@ -415,8 +415,8 @@ function showEstimator(rec,country){
       </div>
       ${variantSel}
       <div class="grid3">
-        <div class="form-group"><label>Direct SEE (tCO₂e/t)</label><input type="number" id="estDir" min="0" step="any" value="" placeholder="from your supplier"></div>
-        ${incInd?`<div class="form-group"><label>Indirect SEE (tCO₂e/t)</label><input type="number" id="estInd" min="0" step="any" value="" placeholder="from your supplier"></div>`
+        <div class="form-group"><label>Direct (tCO₂e/t)</label><input type="number" id="estDir" min="0" step="any" value="" placeholder="from your supplier"></div>
+        ${incInd?`<div class="form-group"><label>Indirect (tCO₂e/t)</label><input type="number" id="estInd" min="0" step="any" value="" placeholder="from your supplier"></div>`
                 :`<div class="form-group"><label>Indirect emissions</label><input type="text" value="Not priced for ${esc(cat)}" disabled></div>`}
         <div class="form-group"><label>Benchmark (tCO₂e/t)</label><input type="number" id="estBench" min="0" step="any" value="${benchFor(code,bRows.length?bRows[0][0]:'')}"><span class="help-text">Reg (EU) 2025/2620, column B</span></div>
       </div>
