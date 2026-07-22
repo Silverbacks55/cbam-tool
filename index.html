@@ -20,6 +20,10 @@
 body{font-family:'Open Sans',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.6;color:var(--ink);background:var(--bg)}
 h1,h2,h3,h4{font-family:'Sorts Mill Goudy',Georgia,serif;font-weight:400}
 .page{max-width:1080px;margin:0 auto;padding:20px}
+.tool-header{text-align:center;padding:32px 20px 22px;margin-bottom:22px;border-bottom:1px solid var(--line)}
+.tool-logo{height:46px;width:auto;margin-bottom:14px}
+.tool-header h1{font-family:'Sorts Mill Goudy',Georgia,serif;font-weight:400;color:var(--green);font-size:1.9rem;line-height:1.12}
+@media(max-width:768px){.tool-logo{height:38px}.tool-header h1{font-size:1.55rem}}
 #brand{position:fixed;top:18px;right:22px;z-index:50;font-family:'Sorts Mill Goudy',serif;color:var(--green);font-size:1.15rem}
 @media(max-width:768px){#brand{position:relative;top:0;right:0;text-align:center;padding:14px 0;background:#fff}}
 .hero{text-align:center;padding:56px 24px;color:#fff;border-radius:8px;margin-bottom:34px;background:linear-gradient(135deg,var(--green) 0%,var(--green-deep) 100%)}
@@ -148,6 +152,11 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
 </head>
 <body>
 <div class="page">
+  <div class="tool-header">
+    <img src="logogreen.png" alt="GBB Strategy" class="tool-logo" onerror="this.style.display='none'">
+    <h1>CBAM Self-Assessment Tool</h1>
+  </div>
+
   <div class="card">
     <form id="form" autocomplete="off">
       <div class="form-group">
