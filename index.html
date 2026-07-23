@@ -264,8 +264,8 @@ function obligations(){
 }
 function emissionsData(rec){
   const ro=[
-    ['Quantity to report',val(rec,'Quantity')],
-    ['Country of origin',val(rec,'Country')],
+    ['Quantity to report',''],
+    ['Country of origin',''],
     ['Installation data',val(rec,'Installation data')],
     ['Direct emissions','Specific direct embedded emissions must be determined and reported.'],
     ['Indirect emissions',val(rec,'Indirect Emissions')==='Yes'?val(rec,'Indirect Emissions Data'):'Not required for this good ('+val(rec,'Indirect Emissions Data')+')'],
@@ -276,7 +276,7 @@ function emissionsData(rec){
   ];
   const prec=val(rec,'Precursors'),spec=val(rec,'Special provisions');
   return `<div class="report"><h4>Emissions data you'll need to gather</h4>`+
-    ro.filter(([k,v])=>v&&v!=='—').map(([k,v])=>`<div class="rrow"><div class="rk">${k}</div><div class="rv">${nl(v)}</div></div>`).join('')+
+    ro.filter(([k,v])=>v!=='—').map(([k,v])=>`<div class="rrow"><div class="rk">${k}</div>${v?`<div class="rv">${nl(v)}</div>`:''}</div>`).join('')+
     (prec?`<div class="rrow"><div class="rk">Relevant precursors</div><div class="rv">${nl(prec)}</div></div>`:'')+
     (spec?`<div class="rrow"><div class="rk">Special provisions</div><div class="rv">${nl(spec)}</div></div>`:'')+`</div>`;
 }
@@ -285,7 +285,7 @@ document.getElementById('form').addEventListener('submit',e=>{
   e.preventDefault();const box=document.getElementById('result');
   const code=input.value.trim(),country=csel.value,purpose=document.getElementById('purpose').value,mass=document.getElementById('mass').value;
   const err=(m,d)=>{box.innerHTML=`<div class="slip"><div class="verdict err"><div class="mark">${m}</div><div><h3>${d}</h3></div></div></div>`;box.scrollIntoView({behavior:'smooth',block:'nearest'});};
-  if(!code||!country||!purpose||!mass){box.innerHTML=`<div class="slip"><div class="verdict err"><div class="mark">!</div><div><h3>Incomplete</h3><p>Fill in all four fields to run the check.</p></div></div></div>`;return;}
+  if(!code||!country||!purpose||!mass){box.innerHTML=`<div class="slip"><div class="verdict err"><div class="mark">!</div><div><h3>Incomplete</h3><p>Fill in all four fields</p></div></div></div>`;return;}
   const rec=byCode.get(code);
   if(!rec){box.innerHTML=`<div class="slip"><div class="verdict err"><div class="mark">?</div><div><h3>Code not in the CBAM list</h3><p><b>${esc(code)}</b> isn't among the CN codes in Annex I of the CBAM Regulation. Double-check the 8-digit code, or search by product name.</p></div></div></div>`;box.scrollIntoView({behavior:'smooth',block:'nearest'});return;}
 
