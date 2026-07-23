@@ -271,7 +271,7 @@ function emissionsData(rec){
     ['Indirect emissions',val(rec,'Indirect Emissions')==='Yes'?val(rec,'Indirect Emissions Data'):'Not required for this good ('+val(rec,'Indirect Emissions Data')+')'],
     ['Production route','Must be reported. Options: '+val(rec,'Production Routes')],
     ['Qualifying parameters',val(rec,'Extra')||'—'],
-    ['Data quality',val(rec,'Data quality')],
+    ['Data quality','Emissions must be determined using the CBAM methodology set out in the Regulation, or Commission default values where verified actual data isn\'t available. Reported embedded emissions must be verified by an accredited verifier.'],
     ['Carbon price abroad','A carbon price paid in the country of origin may be deducted, where evidenced.'],
   ];
   const prec=val(rec,'Precursors'),spec=val(rec,'Special provisions');
