@@ -162,7 +162,7 @@ input:focus,select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0
       <div class="form-group">
         <label for="cnInput">Commodity code <span class="hint">— type an 8-digit CN code or search by product</span></label>
         <div class="combo">
-          <input id="cnInput" type="text" inputmode="numeric" placeholder="e.g. 76169990 or “aluminium”" role="combobox" aria-expanded="false" aria-controls="menu" aria-autocomplete="list">
+          <input id="cnInput" type="text" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="e.g. 76169990 or “aluminium”" role="combobox" aria-expanded="false" aria-controls="menu" aria-autocomplete="list">
           <div id="menu" class="menu" role="listbox"></div>
         </div>
         <span class="help-text">The 8-digit Combined Nomenclature code from your customs paperwork. Only goods within CBAM's scope are listed here: cement, iron &amp; steel, aluminium, fertilisers, hydrogen and electricity.</span>
@@ -236,7 +236,7 @@ function renderMenu(){if(!matches.length){menu.innerHTML='<div class="noopt">No 
   menu.innerHTML=matches.map((r,i)=>`<div class="opt" role="option" data-i="${i}" aria-selected="${i===active}"><span class="code">${val(r,'CN Code')}</span><span class="desc">${esc(val(r,'Goods concerned'))}</span><span class="cat">${esc(val(r,'Main Category'))}</span></div>`).join('');open(true);}
 function open(o){menu.classList.toggle('open',o);input.setAttribute('aria-expanded',o);if(!o)active=-1;}
 function choose(i){const r=matches[i];if(!r)return;input.value=val(r,'CN Code');open(false);}
-input.addEventListener('input',()=>{matches=search(input.value);active=-1;renderMenu();});
+input.addEventListener('input',()=>{active=-1;if(!input.value.trim()){matches=[];open(false);return;}matches=search(input.value);renderMenu();});
 input.addEventListener('focus',()=>{if(input.value){matches=search(input.value);renderMenu();}});
 input.addEventListener('keydown',e=>{if(!menu.classList.contains('open'))return;
   if(e.key==='ArrowDown'){e.preventDefault();active=Math.min(active+1,matches.length-1);renderMenu();sc();}
