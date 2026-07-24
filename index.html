@@ -235,9 +235,11 @@ function search(q){q=q.trim().toLowerCase();if(!q)return[];const digits=/^\d+$/.
 function renderMenu(){if(!matches.length){menu.innerHTML='<div class="noopt">No matching commodity code.</div>';open(true);return;}
   menu.innerHTML=matches.map((r,i)=>`<div class="opt" role="option" data-i="${i}" aria-selected="${i===active}"><span class="code">${val(r,'CN Code')}</span><span class="desc">${esc(val(r,'Goods concerned'))}</span><span class="cat">${esc(val(r,'Main Category'))}</span></div>`).join('');open(true);}
 function open(o){menu.classList.toggle('open',o);input.setAttribute('aria-expanded',o);if(!o)active=-1;}
-function choose(i){const r=matches[i];if(!r)return;input.value=val(r,'CN Code');open(false);}
+let selectedLabel='';
+const codeOf=v=>{const s=String(v||'').trim();const m=s.match(/^(\d{8})(?:\s|$|—)/);return m?m[1]:s;};
+function choose(i){const r=matches[i];if(!r)return;selectedLabel=`${val(r,'CN Code')} — ${val(r,'Goods concerned')}`;input.value=selectedLabel;open(false);}
 input.addEventListener('input',()=>{active=-1;if(!input.value.trim()){matches=[];open(false);return;}matches=search(input.value);renderMenu();});
-input.addEventListener('focus',()=>{if(input.value){matches=search(input.value);renderMenu();}});
+input.addEventListener('focus',()=>{if(input.value&&input.value!==selectedLabel){matches=search(input.value);renderMenu();}});
 input.addEventListener('keydown',e=>{if(!menu.classList.contains('open'))return;
   if(e.key==='ArrowDown'){e.preventDefault();active=Math.min(active+1,matches.length-1);renderMenu();sc();}
   else if(e.key==='ArrowUp'){e.preventDefault();active=Math.max(active-1,0);renderMenu();sc();}
@@ -283,7 +285,7 @@ function emissionsData(rec){
 
 document.getElementById('form').addEventListener('submit',e=>{
   e.preventDefault();const box=document.getElementById('result');
-  const code=input.value.trim(),country=csel.value,purpose=document.getElementById('purpose').value,mass=document.getElementById('mass').value;
+  const code=codeOf(input.value),country=csel.value,purpose=document.getElementById('purpose').value,mass=document.getElementById('mass').value;
   const err=(m,d)=>{box.innerHTML=`<div class="slip"><div class="verdict err"><div class="mark">${m}</div><div><h3>${d}</h3></div></div></div>`;box.scrollIntoView({behavior:'smooth',block:'nearest'});};
   if(!code||!country||!purpose||!mass){box.innerHTML=`<div class="slip"><div class="verdict err"><div class="mark">!</div><div><h3>Incomplete</h3><p>Fill in all four fields</p></div></div></div>`;return;}
   const rec=byCode.get(code);
